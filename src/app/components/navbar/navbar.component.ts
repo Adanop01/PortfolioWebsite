@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 export class NavbarComponent implements OnInit {
   isDarkMode = true; // Default to dark mode
   isMobileMenuOpen = false;
+  logoLetters = ['A', 'd', 'a', 'n', ' ', 'O', ' ', 'P'];
 
   navItems = [
     { id: 'home', label: 'Home' },
