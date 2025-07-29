@@ -1,0 +1,51 @@
+<!-- Navigation -->
+<app-navbar></app-navbar>
+
+<!-- Main Content -->
+<main>
+  <!-- Hero Section -->
+  <app-hero></app-hero>
+  
+  <!-- About Section -->
+  <app-about></app-about>
+  
+  <!-- Experience Section -->
+  <app-experience></app-experience>
+  
+  <!-- Skills Section -->
+  <app-skills></app-skills>
+  
+  <!-- Contact Section -->
+  <app-contact></app-contact>
+</main>
+
+<!-- Footer -->
+<footer style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(31, 38, 135, 0.8)); backdrop-filter: blur(20px); color: white; padding: 2rem 0; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+  <div class="container">
+    <div class="text-center">
+      <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">
+        © 2025 Adan O P. Built with Angular & Modern CSS.
+      </p>
+      <div class="flex gap-2" style="justify-content: center;">
+        <a href="https://www.linkedin.com/in/adan-o-p-2974801b4" 
+           target="_blank"
+           class="social-link"
+           style="color: rgba(255, 255, 255, 0.8); padding: 0.5rem; transition: all 0.3s ease;">
+          LinkedIn
+        </a>
+        <a href="mailto:adanop01@gmail.com" 
+           class="social-link"
+           style="color: rgba(255, 255, 255, 0.8); padding: 0.5rem; transition: all 0.3s ease;">
+          Email
+        </a>
+        <a href="tel:+918137979526" 
+           class="social-link"
+           style="color: rgba(255, 255, 255, 0.8); padding: 0.5rem; transition: all 0.3s ease;">
+          Phone
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<router-outlet />

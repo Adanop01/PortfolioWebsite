@@ -1,0 +1,87 @@
+<nav [ngStyle]="getNavbarStyles()" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; backdrop-filter: blur(20px); transition: all 0.3s ease;">
+  <div class="container" style="display: flex; justify-content: space-between; align-items: center; height: 4rem;">
+    <!-- Logo -->
+    <div>
+      <a href="#home" style="font-size: 1.5rem; font-weight: bold; text-decoration: none;" class="gradient-text">
+        Adan O P
+      </a>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <div class="hidden" style="display: flex; gap: 2rem;" id="desktop-nav">
+      <a *ngFor="let item of navItems" 
+         [href]="'#' + item.id"
+         [style.color]="getNavLinkStyles()"
+         style="text-decoration: none; padding: 0.5rem 1rem; transition: all 0.3s ease; position: relative;"
+         (mouseenter)="onNavLinkHover($event, true)"
+         (mouseleave)="onNavLinkHover($event, false)">
+        {{ item.label }}
+      </a>
+    </div>
+
+    <!-- Theme Toggle & Mobile Menu Button -->
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <!-- Theme Toggle -->
+      <button 
+        (click)="toggleTheme()"
+        [style.background]="isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'"
+        [style.color]="isDarkMode ? '#ffffff' : '#000000'"
+        style="padding: 0.5rem; border: none; border-radius: 0.5rem; cursor: pointer; transition: all 0.3s ease;"
+        (mouseenter)="onThemeButtonHover($event, true)"
+        (mouseleave)="onThemeButtonHover($event, false)">
+        <!-- Sun icon for dark mode (clicking will switch to light) -->
+        <svg *ngIf="isDarkMode" style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+        </svg>
+        <!-- Moon icon for light mode (clicking will switch to dark) -->
+        <svg *ngIf="!isDarkMode" style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+      </button>
+
+      <!-- Mobile menu button -->
+      <button 
+        (click)="toggleMobileMenu()"
+        id="mobile-menu-btn"
+        [style.background]="isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'"
+        [style.color]="getMobileButtonColor()"
+        style="padding: 0.5rem; border: none; border-radius: 0.5rem; cursor: pointer; transition: background 0.3s ease;"
+        (mouseenter)="onMobileButtonHover($event, true)"
+        (mouseleave)="onMobileButtonHover($event, false)">
+        <svg style="width: 24px; height: 24px;" fill="none" [attr.stroke]="getMobileButtonColor()" viewBox="0 0 24 24">
+          <path *ngIf="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          <path *ngIf="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div *ngIf="isMobileMenuOpen" 
+       [style.background]="isDarkMode ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)'" 
+       [style.border-top]="isDarkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)'" 
+       style="padding: 1rem;">
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+      <a *ngFor="let item of navItems" 
+         [href]="'#' + item.id"
+         (click)="closeMobileMenu()"
+         [style.color]="isDarkMode ? '#e0e0e0' : '#4b5563'"
+         style="text-decoration: none; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: all 0.3s ease;"
+         (mouseenter)="onMobileLinkHover($event, true)"
+         (mouseleave)="onMobileLinkHover($event, false)">
+        {{ item.label }}
+      </a>
+    </div>
+  </div>
+</nav>
+
+<style>
+@media (min-width: 768px) {
+  #desktop-nav {
+    display: flex !important;
+  }
+  #mobile-menu-btn {
+    display: none !important;
+  }
+}
+</style>
