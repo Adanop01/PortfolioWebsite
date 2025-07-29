@@ -1,87 +1,493 @@
-<nav [ngStyle]="getNavbarStyles()" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; backdrop-filter: blur(20px); transition: all 0.3s ease;">
-  <div class="container" style="display: flex; justify-content: space-between; align-items: center; height: 4rem;">
+<nav class="modern-navbar" [ngStyle]="getNavbarStyles()">
+  <div class="navbar-container">
     <!-- Logo -->
-    <div>
-      <a href="#home" style="font-size: 1.5rem; font-weight: bold; text-decoration: none;" class="gradient-text">
-        Adan O P
+    <div class="navbar-brand">
+      <a href="#home" class="brand-link gradient-text">
+        <span class="brand-text">Adan O P</span>
       </a>
     </div>
 
     <!-- Desktop Navigation -->
-    <div class="hidden" style="display: flex; gap: 2rem;" id="desktop-nav">
+    <div class="navbar-nav desktop-nav">
       <a *ngFor="let item of navItems" 
          [href]="'#' + item.id"
+         class="nav-link"
          [style.color]="getNavLinkStyles()"
-         style="text-decoration: none; padding: 0.5rem 1rem; transition: all 0.3s ease; position: relative;"
          (mouseenter)="onNavLinkHover($event, true)"
          (mouseleave)="onNavLinkHover($event, false)">
         {{ item.label }}
+        <span class="nav-link-underline"></span>
       </a>
     </div>
 
-    <!-- Theme Toggle & Mobile Menu Button -->
-    <div style="display: flex; align-items: center; gap: 1rem;">
+    <!-- Right Side Actions -->
+    <div class="navbar-actions">
       <!-- Theme Toggle -->
       <button 
         (click)="toggleTheme()"
-        [style.background]="isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'"
-        [style.color]="isDarkMode ? '#ffffff' : '#000000'"
-        style="padding: 0.5rem; border: none; border-radius: 0.5rem; cursor: pointer; transition: all 0.3s ease;"
+        class="theme-toggle-btn"
+        [class.dark]="isDarkMode"
+        [class.light]="!isDarkMode"
+        [attr.aria-label]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
         (mouseenter)="onThemeButtonHover($event, true)"
         (mouseleave)="onThemeButtonHover($event, false)">
-        <!-- Sun icon for dark mode (clicking will switch to light) -->
-        <svg *ngIf="isDarkMode" style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
-        </svg>
-        <!-- Moon icon for light mode (clicking will switch to dark) -->
-        <svg *ngIf="!isDarkMode" style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-        </svg>
+        <div class="theme-icon-container">
+          <!-- Sun icon for dark mode -->
+          <svg *ngIf="isDarkMode" class="theme-icon sun-icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+          </svg>
+          <!-- Moon icon for light mode -->
+          <svg *ngIf="!isDarkMode" class="theme-icon moon-icon" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+        </div>
       </button>
 
       <!-- Mobile menu button -->
       <button 
         (click)="toggleMobileMenu()"
-        id="mobile-menu-btn"
-        [style.background]="isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'"
-        [style.color]="getMobileButtonColor()"
-        style="padding: 0.5rem; border: none; border-radius: 0.5rem; cursor: pointer; transition: background 0.3s ease;"
-        (mouseenter)="onMobileButtonHover($event, true)"
-        (mouseleave)="onMobileButtonHover($event, false)">
-        <svg style="width: 24px; height: 24px;" fill="none" [attr.stroke]="getMobileButtonColor()" viewBox="0 0 24 24">
-          <path *ngIf="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          <path *ngIf="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
+        class="mobile-menu-btn"
+        [class.active]="isMobileMenuOpen"
+        [attr.aria-label]="isMobileMenuOpen ? 'Close menu' : 'Open menu'"
+        [attr.aria-expanded]="isMobileMenuOpen">
+        <div class="hamburger-lines">
+          <span class="line line1"></span>
+          <span class="line line2"></span>
+          <span class="line line3"></span>
+        </div>
       </button>
     </div>
   </div>
 
-  <!-- Mobile Navigation -->
-  <div *ngIf="isMobileMenuOpen" 
-       [style.background]="isDarkMode ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)'" 
-       [style.border-top]="isDarkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)'" 
-       style="padding: 1rem;">
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <a *ngFor="let item of navItems" 
-         [href]="'#' + item.id"
-         (click)="closeMobileMenu()"
-         [style.color]="isDarkMode ? '#e0e0e0' : '#4b5563'"
-         style="text-decoration: none; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: all 0.3s ease;"
-         (mouseenter)="onMobileLinkHover($event, true)"
-         (mouseleave)="onMobileLinkHover($event, false)">
-        {{ item.label }}
-      </a>
+  <!-- Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay" 
+       [class.active]="isMobileMenuOpen"
+       (click)="closeMobileMenu()"></div>
+
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav" 
+       [class.active]="isMobileMenuOpen"
+       [style.background]="isDarkMode ? 'rgba(0, 0, 0, 0.98)' : 'rgba(255, 255, 255, 0.98)'">
+    <div class="mobile-nav-content">
+      <div class="mobile-nav-header">
+        <span class="mobile-nav-title gradient-text">Navigation</span>
+        <button (click)="closeMobileMenu()" class="mobile-close-btn">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="mobile-nav-links">
+        <a *ngFor="let item of navItems; let i = index" 
+           [href]="'#' + item.id"
+           class="mobile-nav-link"
+           [style.animation-delay]="(i * 0.1) + 's'"
+           (click)="closeMobileMenu()">
+          <span class="mobile-link-text">{{ item.label }}</span>
+          <svg class="mobile-link-arrow" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="mobile-nav-footer">
+        <p class="mobile-footer-text">Let's build something amazing together!</p>
+      </div>
     </div>
   </div>
 </nav>
 
 <style>
+/* Modern Navbar Styles */
+.modern-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  backdrop-filter: blur(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+}
+
+/* Brand/Logo */
+.navbar-brand {
+  flex-shrink: 0;
+}
+
+.brand-link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.brand-link:hover {
+  transform: scale(1.05);
+}
+
+.brand-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+/* Desktop Navigation */
+.desktop-nav {
+  display: none;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0.5rem;
+}
+
+.nav-link-underline {
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00f5ff, #ff00ff);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-50%);
+  border-radius: 1px;
+}
+
+.nav-link:hover .nav-link-underline {
+  width: 80%;
+}
+
+/* Right Side Actions */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.theme-toggle-btn.dark {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.theme-toggle-btn.light {
+  background: rgba(0, 0, 0, 0.1);
+  color: #000000;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 4px 20px rgba(0, 245, 255, 0.3);
+}
+
+.theme-icon-container {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.theme-icon {
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hamburger-lines {
+  position: relative;
+  width: 24px;
+  height: 18px;
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.line1 { top: 0; }
+.line2 { top: 50%; transform: translateY(-50%); }
+.line3 { bottom: 0; }
+
+.mobile-menu-btn.active .line1 {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.mobile-menu-btn.active .line2 {
+  opacity: 0;
+  transform: translateY(-50%) scale(0);
+}
+
+.mobile-menu-btn.active .line3 {
+  bottom: 50%;
+  transform: translateY(50%) rotate(-45deg);
+}
+
+/* Mobile Navigation Overlay */
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+}
+
+.mobile-nav-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Mobile Navigation Menu */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 320px;
+  max-width: 85vw;
+  height: 100%;
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1001;
+  overflow-y: auto;
+}
+
+.mobile-nav.active {
+  right: 0;
+}
+
+.mobile-nav-content {
+  padding: 2rem 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.mobile-close-btn {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  color: currentColor;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.mobile-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(90deg);
+}
+
+.mobile-nav-links {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  text-decoration: none;
+  color: currentColor;
+  border-radius: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateX(20px);
+  animation: slideInRight 0.5s ease forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.1), transparent);
+  transition: left 0.6s;
+}
+
+.mobile-nav-link:hover::before {
+  left: 100%;
+}
+
+.mobile-nav-link:hover {
+  background: rgba(0, 245, 255, 0.1);
+  transform: translateX(8px);
+  color: #00f5ff;
+}
+
+.mobile-link-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.mobile-link-arrow {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.mobile-nav-link:hover .mobile-link-arrow {
+  transform: translateX(4px);
+}
+
+.mobile-nav-footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.mobile-footer-text {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* Animations */
+@keyframes slideInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive Design */
 @media (min-width: 768px) {
-  #desktop-nav {
-    display: flex !important;
+  .desktop-nav {
+    display: flex;
   }
-  #mobile-menu-btn {
-    display: none !important;
+  
+  .mobile-menu-btn {
+    display: none;
   }
+  
+  .navbar-container {
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .desktop-nav {
+    gap: 2.5rem;
+  }
+  
+  .nav-link {
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+  }
+}
+
+/* Dark/Light theme specific styles */
+body.dark-theme .mobile-nav-link:hover {
+  background: rgba(0, 245, 255, 0.1);
+  color: #00f5ff;
+}
+
+body.light-theme .mobile-nav-link:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+body.dark-theme .mobile-nav {
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.light-theme .mobile-nav {
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .mobile-nav-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.light-theme .mobile-nav-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .mobile-nav-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.light-theme .mobile-nav-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 </style>
